@@ -50,14 +50,14 @@ def get_transform(opt):
 
 def get_sparse_transform(opt):
     transform_list=[]
-    if opt.model == "label_pix2pix" or opt.dataset_mode=='labeled' :
+    if opt.model == "label_pix2pix" or opt.dataset_mode=='labeled' or opt.dataset_mode=='reference_hd':
         transform_list = []
         osize = [opt.sparseSize, opt.sparseSize]
         transform_list.append(transforms.Scale(osize, Image.BICUBIC))
 
         transform_list += [transforms.ToTensor(),
-                       transforms.Normalize((0.5, 0.5, 0.5),
-                                            (0.5, 0.5, 0.5))]
+                           transforms.Normalize((0.5, 0.5, 0.5),
+                                                (0.5, 0.5, 0.5))]
 
 
     return transforms.Compose(transform_list)

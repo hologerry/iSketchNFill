@@ -1,6 +1,6 @@
 import time
 from options.train_options import TrainOptions
-from data.data_loader import CreateDataLoader
+from datasets.data_loader import CreateDataLoader
 from models.models import create_model
 from util.visualizer import Visualizer
 import random
@@ -25,7 +25,7 @@ for epoch in range(opt.epoch_count, opt.niter + opt.niter_decay + 1):
         visualizer.reset()
         total_steps += opt.batchSize
         epoch_iter += opt.batchSize
-        if data['label'].size(0)!=opt.batchSize:
+        if data['label'].size(0) != opt.batchSize:
             continue
         model.set_input(data)
         model.optimize_parameters()

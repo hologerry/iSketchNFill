@@ -8,7 +8,7 @@ def create_model(opt):
         model = Pix2PixModel(opt)
 
     elif opt.model == 'sparse_wgangp_pix2pix':
-        assert(opt.dataset_mode == 'labeled')
+        # assert(opt.dataset_mode == 'labeled')
         from .sparse_wgangp_pix2pix_model import SparseWGANGPPix2PixModel
         model = SparseWGANGPPix2PixModel()
 

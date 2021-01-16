@@ -1,7 +1,7 @@
 import os.path
 import torchvision.transforms as transforms
-from data.base_dataset import BaseDataset, get_transform , get_sparse_transform , get_mask_transform
-from data.image_folder import make_dataset
+from datasets.base_dataset import BaseDataset, get_transform , get_sparse_transform , get_mask_transform
+from datasets.image_folder import make_dataset
 from PIL import Image
 import PIL
 import random
@@ -34,6 +34,7 @@ class LabeledDataset(BaseDataset):
         self.transform = get_transform(opt)
         self.sparse_transform = get_sparse_transform(opt)
         self.mask_transform =  get_mask_transform(opt)
+
     def find_label(self,index):
         sub=0
         for i in range(self.num_classes):

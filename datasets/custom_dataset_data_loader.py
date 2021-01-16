@@ -1,21 +1,24 @@
 import torch.utils.data
-from data.base_data_loader import BaseDataLoader
+from datasets.base_data_loader import BaseDataLoader
 
 
 def CreateDataset(opt):
     dataset = None
     if opt.dataset_mode == 'aligned':
-        from data.aligned_dataset import AlignedDataset
+        from datasets.aligned_dataset import AlignedDataset
         dataset = AlignedDataset()
     elif opt.dataset_mode == 'unaligned':
-        from data.unaligned_dataset import UnalignedDataset
+        from datasets.unaligned_dataset import UnalignedDataset
         dataset = UnalignedDataset()
     elif opt.dataset_mode == 'labeled':
-        from data.labeled_dataset import LabeledDataset
+        from datasets.labeled_dataset import LabeledDataset
         dataset = LabeledDataset()
     elif opt.dataset_mode == 'single':
-        from data.single_dataset import SingleDataset
+        from datasets.single_dataset import SingleDataset
         dataset = SingleDataset()
+    elif opt.dataset_mode == 'reference_hd':
+        from datasets.reference_hd_dataset import ReferenceHDDataset
+        dataset = ReferenceHDDataset()
     else:
         raise ValueError("Dataset [%s] not recognized." % opt.dataset_mode)
 

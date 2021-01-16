@@ -18,14 +18,14 @@ class BaseOptions():
         self.parser.add_argument('--edges_outlines_dataset', action='store_true', help='autocomplete database used')
         self.parser.add_argument('--lambda_info_con', type=float, default=1.0, help='weight for cycle loss (A -> B -> A)')
         self.parser.add_argument('--lambda_info_dis', type=float, default=1.0, help='weight for cycle loss (A -> B -> A)')
-        self.parser.add_argument('--dataroot', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
-        self.parser.add_argument('--batchSize', type=int, default=1, help='input batch size')
-        self.parser.add_argument('--loadSize', type=int, default=286, help='scale images to this size')
-        self.parser.add_argument('--fineSize', type=int, default=256, help='then crop to this size')
-        self.parser.add_argument('--sparseSize', type=int, default=4, help='then crop to this size')
+        self.parser.add_argument('--dataroot', type=str, default='data', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
+        self.parser.add_argument('--batchSize', type=int, default=8, help='input batch size')
+        self.parser.add_argument('--loadSize', type=int, default=512, help='scale images to this size')
+        self.parser.add_argument('--fineSize', type=int, default=512, help='then crop to this size')
+        self.parser.add_argument('--sparseSize', type=int, default=16, help='then crop to this size')
         self.parser.add_argument('--input_nc', type=int, default=3, help='# of input image channels')
         self.parser.add_argument('--output_nc', type=int, default=3, help='# of output image channels')
-        self.parser.add_argument('--nz', type=int, default=8, help='# of gen filters in first conv layer')
+        self.parser.add_argument('--nz', type=int, default=256, help='# of gen filters in first conv layer')
         self.parser.add_argument('--ngf', type=int, default=32, help='# of gen filters in first conv layer')
         self.parser.add_argument('--ndf_gate', type=int, default=16, help='# of neurons in the gate block')
         self.parser.add_argument('--ngf_gate', type=int, default=16, help='# of neurons in the gate block')
@@ -42,20 +42,21 @@ class BaseOptions():
         self.parser.add_argument('--which_model_gated_netG', type=str, default='simple', help='selects model to use for netG')
         self.parser.add_argument('--n_layers_D', type=int, default=3, help='only used if which_model_netD==n_layers')
         self.parser.add_argument('--num_groups', type=int, default=8, help='Num Groups in Group Normalization')
-        self.parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+        self.parser.add_argument('--gpu_ids', type=str, default='0,1,2,3,4,5,6,7', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+        # self.parser.add_argument('--gpu_ids', type=str, default='0,1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         self.parser.add_argument('--name', type=str, default='experiment_name', help='name of the experiment. It decides where to store samples and models')
-        self.parser.add_argument('--dataset_mode', type=str, default='labeled', help='chooses how datasets are loaded. [unaligned | aligned | single | labeled]')
-        self.parser.add_argument('--model', type=str, default='cycle_gan',
+        self.parser.add_argument('--dataset_mode', type=str, default='reference_hd', help='chooses how datasets are loaded. [unaligned | aligned | single | labeled]')
+        self.parser.add_argument('--model', type=str, default='sparse_wgangp_pix2pix',
                                  help='chooses which model to use. cycle_gan, pix2pix, test')
         self.parser.add_argument('--which_direction', type=str, default='AtoB', help='AtoB or BtoA')
-        self.parser.add_argument('--nThreads', default=2, type=int, help='# threads for loading data')
+        self.parser.add_argument('--nThreads', default=8, type=int, help='# threads for loading data')
         self.parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
         self.parser.add_argument('--norm', type=str, default='instance', help='instance normalization or batch normalization')
         self.parser.add_argument('--norm_G', type=str, default='instance', help='instance normalization or batch normalization')
         self.parser.add_argument('--norm_D', type=str, default='instance', help='instance normalization or batch normalization')
         self.parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')
         self.parser.add_argument('--display_winsize', type=int, default=256,  help='display window size')
-        self.parser.add_argument('--display_id', type=int, default=1, help='window id of the web display')
+        self.parser.add_argument('--display_id', type=int, default=0, help='window id of the web display')
         self.parser.add_argument('--display_port', type=int, default=8097, help='visdom port of the web display')
         self.parser.add_argument('--no_dropout', action='store_true', help='no dropout for the generator')
         self.parser.add_argument('--dropout' , type = float , default=0.0 , help = 'Dropout rate' )
@@ -70,20 +71,28 @@ class BaseOptions():
         self.parser.add_argument('--init_variance', type=float, default=0.02, help='variance of the initialization distribution')
         self.parser.add_argument('--res_op', type=str, default='add', help='which residual operation [add|max]')
 
-        self.parser.add_argument('--n_classes', type=int, default=10, help='the number of classes for the label gated pix2pix variant')
+        self.parser.add_argument('--n_classes', type=int, default=1, help='the number of classes for the label gated pix2pix variant')
         self.parser.add_argument('--nc', type=int, default=3, help='Number of channels in the images')
         self.parser.add_argument('--label_nc', type=int, default=3, help='Number of channels in the images')
         self.parser.add_argument('--wgan_gp_lambda', type=float, default=10.0, help='Number of channels in the images')
         self.parser.add_argument('--wgan_gp_center', type=float, default=0.0, help='Number of channels in the images')
 
-        self.parser.add_argument('--img_conditional_D',dest='img_conditional_D',action='store_true' , help='whether to use spectral normalization in the discriminator')
+        self.parser.add_argument('--img_conditional_D', type=bool, default=True, dest='img_conditional_D', help='whether to use spectral normalization in the discriminator')
         self.parser.add_argument('--use_vae',dest='use_vae',action='store_true' , help='whether to use VAE for pix2pixhd')
         self.parser.add_argument('--spectral_D', dest='spectral_D',action='store_true' ,help='whether to use spectral normalization in the discriminator')
         self.parser.add_argument('--spectral_G', dest='spectral_G',action='store_true' ,help='whether to use spectral normalization in the generator')
         self.parser.add_argument('--gate_affine',dest='gate_affine',action='store_true')
         self.parser.add_argument('--no_sparse_add',dest='no_sparse_add',action='store_true')
         self.parser.add_argument('--num_interpolate', type=int, default=20, help='Number of channels in the images')
+
+        # for reference ss hd
+        self.parser.add_argument('--dataset_name', type=str, default='reference_hd',
+                            choices=['masterpiece_hd', 'masterpiece','reference_hd', 'reference_ss_hd', 'reference_test_hd', 'multipiece'])
+        self.parser.add_argument('--case_name', type=str, default='qm0')
+        self.parser.add_argument('--sketch_mode', type=str, default='c', choices=['c', 's', 'l'], help='Sketch type')
+
         self.initialized = True
+        print("base")
 
     def parse(self):
         if not self.initialized:

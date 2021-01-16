@@ -53,15 +53,15 @@ class SparseWGANGPPix2PixModel(BaseModel):
 
 
         self.netG = networks_sparse.define_G(opt.input_nc, opt.output_nc, opt.ngf,
-                                      opt.which_model_netG, opt.norm, not opt.no_dropout, opt.init_type, self.gpu_ids,opt)
+                                             opt.which_model_netG, opt.norm, not opt.no_dropout, opt.init_type, self.gpu_ids,opt)
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         if self.isTrain:
             use_sigmoid = opt.no_lsgan
             opt.which_model_netD = 'GAN_stability_Discriminator'
             self.netD = networks_sparse.define_D(opt.input_nc + opt.output_nc, opt.ndf,
-                                          opt.which_model_netD,
-                                          opt.n_layers_D, opt.norm, use_sigmoid, opt.init_type, self.gpu_ids,opt)
+                                                 opt.which_model_netD,
+                                                 opt.n_layers_D, opt.norm, use_sigmoid, opt.init_type, self.gpu_ids,opt)
 
             if self.isTrain:
                 self.netD = nn.DataParallel(self.netD)
@@ -110,7 +110,7 @@ class SparseWGANGPPix2PixModel(BaseModel):
             z = torch.rand(batch_size, nz) * 2.0 - 1.0
         elif random_type == 'gauss':
             z = torch.randn(batch_size, nz)
-        z= z.cuda()
+        z = z.cuda()
         return z
 
     def set_input(self, input):
@@ -149,7 +149,6 @@ class SparseWGANGPPix2PixModel(BaseModel):
         else:
             self.fake_B = self.netG(self.real_A,self.label)
         self.real_B = Variable(self.input_B, volatile=True)
-
 
     def get_latent_space_visualization(self,num_interpolate=20,label_1=-1,label_2=-1):
         rand_perm = np.random.permutation( self.opt.n_classes  )
@@ -225,8 +224,6 @@ class SparseWGANGPPix2PixModel(BaseModel):
         gate_act = self.netD.forward_gate(self.label)
         return gate_act.data.cpu().numpy()
 
-
-
     def backward_D(self):
         # Fake
         # stop backprop to the generator by detaching fake_B
@@ -282,9 +279,6 @@ class SparseWGANGPPix2PixModel(BaseModel):
         reg = (compute_grad2(d_out, x_interp).sqrt() - center).pow(2).mean()
 
         return reg
-
-
-
 
     def optimize_parameters(self):
         self.forward()

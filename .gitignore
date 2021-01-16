@@ -1,5 +1,5 @@
 debug*
-datasets/
+data/
 checkpoints/
 results/
 build/
