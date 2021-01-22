@@ -19,6 +19,7 @@ class BaseOptions():
         self.parser.add_argument('--lambda_info_con', type=float, default=1.0, help='weight for cycle loss (A -> B -> A)')
         self.parser.add_argument('--lambda_info_dis', type=float, default=1.0, help='weight for cycle loss (A -> B -> A)')
         self.parser.add_argument('--dataroot', type=str, default='data', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
+        # self.parser.add_argument('--dataroot', default='/D_data/Masterpiece/masterpiece/data', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
         self.parser.add_argument('--batchSize', type=int, default=8, help='input batch size')
         self.parser.add_argument('--loadSize', type=int, default=512, help='scale images to this size')
         self.parser.add_argument('--fineSize', type=int, default=512, help='then crop to this size')
@@ -90,6 +91,7 @@ class BaseOptions():
                             choices=['masterpiece_hd', 'masterpiece','reference_hd', 'reference_ss_hd', 'reference_test_hd', 'multipiece'])
         self.parser.add_argument('--case_name', type=str, default='qm0')
         self.parser.add_argument('--sketch_mode', type=str, default='c', choices=['c', 's', 'l'], help='Sketch type')
+        self.parser.add_argument('--mode', type=str, default='crisp_test_cmp', help='Sketch type')
 
         self.initialized = True
         print("base")

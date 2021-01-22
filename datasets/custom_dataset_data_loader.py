@@ -19,6 +19,9 @@ def CreateDataset(opt):
     elif opt.dataset_mode == 'reference_hd':
         from datasets.reference_hd_dataset import ReferenceHDDataset
         dataset = ReferenceHDDataset()
+    elif opt.dataset_mode == 'reference_test_hd':
+        from datasets.reference_test_hd_dataset import ReferenceTestHDDataset
+        dataset = ReferenceTestHDDataset()
     else:
         raise ValueError("Dataset [%s] not recognized." % opt.dataset_mode)
 

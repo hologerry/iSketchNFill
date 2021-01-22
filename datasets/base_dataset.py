@@ -50,7 +50,7 @@ def get_transform(opt):
 
 def get_sparse_transform(opt):
     transform_list=[]
-    if opt.model == "label_pix2pix" or opt.dataset_mode=='labeled' or opt.dataset_mode=='reference_hd':
+    if opt.model == "label_pix2pix" or opt.dataset_mode=='labeled' or opt.dataset_mode=='reference_hd' or opt.dataset_mode=='reference_test_hd':
         transform_list = []
         osize = [opt.sparseSize, opt.sparseSize]
         transform_list.append(transforms.Scale(osize, Image.BICUBIC))
